@@ -9,9 +9,9 @@
 -- The 'id' column is set to be not null and unique, meaning that each row in the table
 -- must have a unique id. This table will be used to store information about users in our
 -- application.
-CREATE TABLE `users` IF NOT EXISTS(
-    `id` INT NOT NULL UNIQUE,
-    `email` VARCHAR(255) NOT NULL,
-    `name` VARCHAR(255),
-    PRIMARY KEY (`id`)
-)
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL UNIQUE,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+) ;
