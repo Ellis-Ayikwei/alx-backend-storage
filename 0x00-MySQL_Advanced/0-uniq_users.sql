@@ -10,8 +10,8 @@
 -- must have a unique id. This table will be used to store information about users in our
 -- application.
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL UNIQUE,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(255),
   PRIMARY KEY (`id`),
 ) ;
