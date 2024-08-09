@@ -11,8 +11,8 @@
 -- application.
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255),
   `country` ENUM('US', 'CO', 'TN') NOT NULL DEFAULT 'US',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_unique` (`email`)
