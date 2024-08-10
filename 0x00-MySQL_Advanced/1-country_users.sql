@@ -18,3 +18,5 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email_unique` (`email`)
 );
 
+
+
