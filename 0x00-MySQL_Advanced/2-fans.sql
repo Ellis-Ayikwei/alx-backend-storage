@@ -3,7 +3,7 @@
 -- The 'GROUP BY origin' clause groups the results by 'origin'.
 -- The 'ORDER BY fans DESC' clause orders the results by the count of 'fans' in descending order.
 -- The result will be a table with two columns: 'origin' and 'fans', where 'fans' is the count of distinct 'fans' for each 'origin'.
- SELECT origin, SUM(fans) AS 'fans' 
+SELECT origin, SUM(fans) AS fans 
    FROM metal_bands
    GROUP BY origin
    ORDER BY fans DESC;
