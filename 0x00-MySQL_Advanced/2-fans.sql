@@ -5,4 +5,4 @@
 -- The result will be a table with two columns: 'origin' and 'fans', where 'fans' is the count of distinct 'fans' for each 'origin'.
  SELECT origin, COUNT(DISTINCT fans) AS 'fans' FROM metal_bands
     GROUP BY origin
-    ORDER BYfans DESC;
+    ORDER BY fans DESC;
