@@ -1,9 +1,9 @@
--- This SQL statement selects the 'origin' column and the count of distinct 'fans' from the 'metal_bands' table.
--- The 'COUNT(DISTINCT fans)' function counts the number of distinct 'fans' for each 'origin'.
--- The 'GROUP BY origin' clause groups the results by 'origin'.
--- The 'ORDER BY fans DESC' clause orders the results by the count of 'fans' in descending order.
--- The result will be a table with two columns: 'origin' and 'fans', where 'fans' is the count of distinct 'fans' for each 'origin'.
-SELECT origin, SUM(fans) AS fans 
+-- ranks country origins of bands, ordered by the number of (non-unique) fans
+COPY metal_bands(origin, fans) FROM 'metal_bands.csv' DELIMITER ',' CSV HEADER;
+
+-- Rank country origins of bands, ordered by the number of (non-unique) fans
+SELECT origin, SUM(fans) AS nb_fans 
    FROM metal_bands
    GROUP BY origin
-   ORDER BY fans DESC;
+   ORDER BY nb_fans DESC;
+
