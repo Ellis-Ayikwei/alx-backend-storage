@@ -13,8 +13,6 @@ def count_calls(method: Callable) -> Callable:
         if hasattr(self, '_redis'):
             key = f"{method.__qualname__}"
             self._redis.incr(key)  # Increment the counter in Redis
-        else:
-            raise AttributeError(f"{self.__class__.__name__} does not have a _redis attribute")
         
         return method(self, *args, **kwargs)
     return wrapper
