@@ -8,7 +8,7 @@ from functools import wraps
 def count_calls(method: Callable) -> Callable:
     """Count how many times methods of the Cache class are called"""
     @wraps(method)
-    def wrapper(self):
+    def wrapper(self, *args, **kwargs):
         """Increment the count for that key every time the method is called"""
         if hasattr(self, '_redis'):
             key = f"{method.__qualname__}"
