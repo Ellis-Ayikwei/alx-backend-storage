@@ -5,7 +5,7 @@ import uuid
 from typing import Union, Any, Callable
 from functools import wraps
 
-def count_calls(method: Callable[[Any, Any], Any]) -> Callable[[Any, Any], Any]:
+def count_calls(method: Callable) -> Callable:
     """Count how many times methods of the Cache class are called
     
     Args:
