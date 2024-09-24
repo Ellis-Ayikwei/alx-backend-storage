@@ -16,6 +16,7 @@ def count_calls(method: Callable) -> Callable:
                 self._redis.incr(key)
             except redis.RedisError as e:
                 print(f"Failed to increment Redis key: {e}")
+            return method
     return wrapper
 
 class Cache:
