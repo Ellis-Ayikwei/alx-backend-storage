@@ -2,19 +2,36 @@
 """Module that defines the Cache class"""
 import redis
 import uuid
-from typing import Union, Any
+from typing import Union, Any, Callable
+from functools import wraps
+from typing import Callable
+
+def count_calls(func: Callable) -> Callable:
+    """Count how many times methods of the Cache class are called"""
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        """Increment the count for that key every time the method is called"""
+        key = f"{func.__qualname__}"
+        self._redis.incr(key)
+        result = func(self, *args, **kwargs)
+        return result
+    return wrapper
 
 class Cache:
     """Cache class"""
+    _redis = None
 
     def __init__(self):
+        """Initialize the Cache class"""
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, float, int]) -> str:
         """Generate a random key and store data in Redis
+        
         Args:
-            data (bytes): The data to store in Redis
+            data (Union[str, bytes, float, int]): The data to store in Redis
         
         Returns:
             str: The random key
