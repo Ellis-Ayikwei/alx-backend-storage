@@ -5,18 +5,25 @@ import uuid
 from typing import Union, Any, Callable
 from functools import wraps
 
-def count_calls(func: Callable) -> Callable:
-    """Count how many times methods of the Cache class are called"""
-    name = func.__qualname__
-    @wraps(func)
-    def wrapper(self, *args, **kwargs):
+def count_calls(method: Callable[[Any, Any], Any]) -> Callable[[Any, Any], Any]:
+    """Count how many times methods of the Cache class are called
+    
+    Args:
+        method: The method to decorate
+    
+    Returns:
+        A decorated method that increments a Redis key for each call
+    """
+    @wraps(method)
+    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
         """Increment the count for that key every time the method is called"""
-        key = f"{name}"
-        try:
-            self._redis.incr(key)
-        except redis.RedisError:
-            pass
-        return func(self, *args, **kwargs)
+        if hasattr(self, '_redis'):
+            try:
+                key = f"{method.__qualname__}"
+                self._redis.incr(key)
+            except redis.RedisError as e:
+                print(f"Failed to increment Redis key: {e}")
+        return method(self, *args, **kwargs)
     return wrapper
 
 class Cache:
