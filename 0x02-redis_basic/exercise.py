@@ -15,7 +15,7 @@ def count_calls(method: Callable[[Any, Any], Any]) -> Callable[[Any, Any], Any]:
         A decorated method that increments a Redis key for each call
     """
     @wraps(method)
-    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+    def wrapper(self, *args, **kwargs) :
         """Increment the count for that key every time the method is called"""
         if hasattr(self, '_redis'):
             key = f"{method.__qualname__}"
