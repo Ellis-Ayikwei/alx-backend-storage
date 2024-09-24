@@ -19,7 +19,6 @@ def count_calls(func: Callable) -> Callable:
 
 class Cache:
     """Cache class"""
-    _redis = None
 
     def __init__(self):
         """Initialize the Cache class"""
