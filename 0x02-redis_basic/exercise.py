@@ -13,6 +13,7 @@ def count_calls(method: Callable) -> Callable:
         if hasattr(self, '_redis'):
             key = f"{method.__qualname__}"
             self._redis.incr(key)
+        return method(self, *args, **kwargs)
     return wrapper
 
 class Cache:
