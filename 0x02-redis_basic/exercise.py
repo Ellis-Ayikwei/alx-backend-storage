@@ -105,7 +105,7 @@ class Cache():
         """
         return self.get(key, int)
     
-def replay(method: Callable) -> None:
+def replay(method: Callable):
     """Replay the history of inputs and outputs for a method
 
     Args:
