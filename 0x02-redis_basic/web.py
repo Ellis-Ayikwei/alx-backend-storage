@@ -8,27 +8,32 @@ from typing import Callable, Any
 ris = redis.Redis()
 
 def count_calls(method: Callable) -> Callable:
-    """Count how many times methods of the Cache class are called."""
+    """Decorator to count how many times a URL is accessed."""
     @wraps(method)
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
-        url = args[0]  # Get the URL from the method args
-        key = f"count:{url}"  # Key to store URL count
-        """Increment the count for that key every time the method is called."""
-        ris.incr(key)  # Increment access count in Redis
-        return method(*args, **kwargs)
-    
+    def wrapper(url: str, *args, **kwargs) -> str:
+        """Increment the count for that key every time the method is called"""
+        key = f"count:{url}"
+        ris.incr(key)
+        return method(url, *args, **kwargs)
     return wrapper
 
 @count_calls
 def get_page(url: str) -> str:
-    """Fetch the content of a URL and cache it in Redis with a 10-second expiration."""
-    key = f"cache:{url}"
-    cached_page = ris.get(key)
-    
+    """Fetch the page content, cache it, and track URL access count"""
+    # Check if the URL content is cached
+    cached_page = ris.get(url)
     if cached_page:
-        return cached_page.decode("utf-8")
-    
-    # Fetch the content if not in cache
+        return cached_page.decode('utf-8')
+
+    # Fetch the page content if not cached
     response = requests.get(url)
-    ris.setex(key, 10, response.text)
-    return response.text
+    content = response.text
+
+    # Cache the result with an expiration time of 10 seconds
+    ris.setex(url, 10, content)
+
+    return content
+
+if __name__ == "__main__":
+    url = "http://slowwly.robertomurray.co.uk/delay/3000/url/https://www.example.com"
+    print(get_page(url))
