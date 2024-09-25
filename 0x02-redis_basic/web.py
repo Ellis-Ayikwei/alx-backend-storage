@@ -8,7 +8,7 @@ from typing import Callable, Any
 ris = redis.Redis()
 ris.flushdb()
 
-def count_calls(method: Callable) -> Callable:
+def method_call_count(method: Callable) -> Callable:
     """Decorator to count how many times a URL is accessed."""
     @wraps(method)
     def wrapper(url:str) -> str:
@@ -18,7 +18,7 @@ def count_calls(method: Callable) -> Callable:
         return method(url)
     return wrapper
 
-@count_calls
+@method_call_count
 def get_page(url: str) -> str:
     """Fetch the page content, cache it, and track URL access count"""
     # Check if the URL content is cached
