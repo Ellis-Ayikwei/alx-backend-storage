@@ -113,9 +113,6 @@ def replay(method: Callable):
     """
     ris = redis.Redis()
     method_name = method.__qualname__
-    
-    # Access the instance of the class
-    instance = method.__self__
     num_calls = ris.get(method_name)
     
     # Use instance to access _redis and other methods
@@ -123,11 +120,10 @@ def replay(method: Callable):
         num_calls = num_calls.decode('utf-8')
     except Exception:
         num_calls  = 0 
-    
     print(f"{method_name} was called {num_calls} times.")
 
-    inputs = ris.lrange(f"{method_name}:inputs", 0, - 1)
-    outputs = ris.lrange(f"{method_name}:outputs", 0, - 1)
+    inputs = ris.lrange(method_name + ":inputs", 0, - 1)
+    outputs = ris.lrange(method_name + ":outputs", 0, - 1)
 
     for inp, out in zip(inputs, outputs):
         try:
