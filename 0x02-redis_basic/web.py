@@ -10,11 +10,11 @@ ris = redis.Redis()
 def count_calls(method: Callable) -> Callable:
     """Decorator to count how many times a URL is accessed."""
     @wraps(method)
-    def wrapper(url: str, *args, **kwargs) -> str:
+    def wrapper(url:str) -> str:
         """Increment the count for that key every time the method is called"""
         key = f"count:{url}"
         ris.incr(key)
-        return method(url, *args, **kwargs)
+        return method(url)
     return wrapper
 
 @count_calls
