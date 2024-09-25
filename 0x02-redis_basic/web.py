@@ -6,6 +6,7 @@ from typing import Callable, Any
 
 # Create Redis instance (ris)
 ris = redis.Redis()
+ris.flushdb()
 
 def count_calls(method: Callable) -> Callable:
     """Decorator to count how many times a URL is accessed."""
@@ -33,7 +34,3 @@ def get_page(url: str) -> str:
     ris.setex(url, 10, content)
 
     return content
-
-if __name__ == "__main__":
-    url = "http://slowwly.robertomurray.co.uk/delay/3000/url/https://www.example.com"
-    print(get_page(url))
