@@ -120,7 +120,7 @@ def replay(method: Callable):
         num_calls = num_calls.decode('utf-8')
     except Exception:
         num_calls  = 0 
-    print(f"{method_name} was called {num_calls} times.")
+    print(f"{method_name} was called {num_calls} times:")
 
     inputs = ris.lrange(method_name + ":inputs", 0, - 1)
     outputs = ris.lrange(method_name + ":outputs", 0, - 1)
