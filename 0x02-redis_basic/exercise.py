@@ -111,28 +111,32 @@ def replay(method: Callable) -> None:
     Args:
         method: The method to replay the history for
     """
+    ris = redis.Redis()
     method_name = method.__qualname__
     
-    # Check if the method is bound to an instance
-    if not hasattr(method, '__self__'):
-        print(f"Error: {method_name} is not bound to an instance.")
-        return
-
     # Access the instance of the class
     instance = method.__self__
-
-    # Check if Redis has stored any data for this method
-    num_calls = instance.get_int(method_name)
-    if num_calls is None or num_calls == 0:
-        print(f"No calls were made to {method_name}.")
-        return
-
+    
+    # Use instance to access _redis and other methods
+    try:
+        num_calls = instance.get_int(method_name)
+    except Exception:
+        num_calls  = 0 
+    
     print(f"{method_name} was called {num_calls} times.")
 
-    # Fetch inputs and outputs
-    inputs = instance._redis.lrange(f"{method_name}:inputs", 0, num_calls - 1)
-    outputs = instance._redis.lrange(f"{method_name}:outputs", 0, num_calls - 1)
+    inputs = ris.lrange(f"{method_name}:inputs", 0, num_calls - 1)
+    outputs = ris.lrange(f"{method_name}:outputs", 0, num_calls - 1)
 
-    # Print each input-output pair
     for inp, out in zip(inputs, outputs):
-        print(f"{method_name}(*{inp.decode('utf-8')}) -> {out.decode('utf-8')}")
+        try:
+            inp = inp.decode('utf-8')
+        except Exception:
+            inp = ""
+        
+        try:
+            out = out.decode('utf-8')
+        except Exception:
+            out = ""
+        
+        print(f"{method_name}(*{inp}) -> {out}")
