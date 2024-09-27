@@ -32,7 +32,6 @@ def get_page(url: str) -> str:
     response = requests.get(url)
     content = response.text
     ris.setex(cache_key, 10, content)
-    return content
+   
 
-
-print (get_page("http://slowwly.robertomurray.co.uk"))
+get_page("http://slowwly.robertomurray.co.uk")
