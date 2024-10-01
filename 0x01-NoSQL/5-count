@@ -1,0 +1,3 @@
+// A script to count the number of docs
+
+db.school.countDocuments({})
