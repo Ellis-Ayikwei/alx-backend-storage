@@ -2,8 +2,8 @@
 """The function that inserts into a new document in a collecion"""
 
 
-
 def insert_school(mongo_collection, **kwargs):
-    """ inserts a new document in a collection """
+    """inserts a new document in a collection"""
 
-    return mongo_collection.insert_one(kwargs)
+    result = mongo_collection.insert_one(kwargs)
+    return result.inserted_id
