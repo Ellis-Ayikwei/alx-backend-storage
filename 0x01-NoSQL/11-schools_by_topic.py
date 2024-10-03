@@ -4,4 +4,5 @@
 
 def schools_by_topic(mongo_collection, topic):
     """Returns a list of a dosc with the topic named {topic}"""
-    return [doc for doc in mongo_collection.find({"topic": topic})]
+    topics_filter = {"topics": {"$in": [topic]}}
+    return [doc for doc in mongo_collection.find(topics_filter)]
